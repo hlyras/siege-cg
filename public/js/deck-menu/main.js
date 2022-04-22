@@ -34,11 +34,16 @@ Card.switchToMain = async (card_id) => {
 	Deck.main.render('Card.switchToCollection');
 };
 
-Deck.render = async (empire_id) => {
+Deck.render = async () => {
 	let empires = await API.response(Empire.list);
 	if(!empires) { return alert("Ocorreu um erro, por favor recarregue a página.")}
 	
-	Empire.render(empires, empire_id - 1, "empire-carousel");
+	let player_deck = await API.response(Player.deck.get);
+	if(!player_deck) { return false; }
+
+	console.log(player_deck);
+
+	Empire.render(empires, player_deck.empire_id - 1, "empire-carousel");
 };
 
-Deck.render(2);
+Deck.render();

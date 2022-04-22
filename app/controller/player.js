@@ -21,6 +21,16 @@ playerController.empire.set = async (req, res) => {
 
 playerController.deck = {};
 
+playerController.deck.get = async (req, res) => {
+	try {
+		let player_deck = (await Player.deck.findByUserId(1))[0];
+		res.send(player_deck);
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: "Ocorreu um erro favor recarregar a página." });
+	}
+};
+
 playerController.deck.list = async (req, res) => {
 	try {
 		let deck_cards = await Player.deck.list(1, req.params.empire_id);

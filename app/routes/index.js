@@ -8,6 +8,7 @@ const empireController = require("../controller/empire");
 
 router.get("/", lib.route.toHttps, pathController.index);
 
+router.get("/player/deck/get", lib.route.toHttps, playerController.deck.get);
 router.get("/player/empire/set/:empire_id", lib.route.toHttps, playerController.empire.set);
 router.get("/player/deck/add/:card_id", lib.route.toHttps, playerController.deck.add);
 router.get("/player/deck/remove/:card_id", lib.route.toHttps, playerController.deck.remove);

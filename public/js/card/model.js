@@ -31,12 +31,3 @@ Card.filter = async (empire_id) => {
 	
 	return response;
 };
-
-// Card.findById = async (id) => {
-// 	let response = await fetch("/card/id/" + id);
-// 	response = await response.json();
-	
-// 	if(API.verifyResponse(response)){ return false };
-	
-// 	return response.card[0];
-// };

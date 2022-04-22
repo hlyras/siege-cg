@@ -11,7 +11,19 @@ Player.empire.set = async (empire_id) => {
 	return response;
 };
 
+
 Player.deck = {};
+
+Player.deck.get = async (empire) => {
+	let response = await fetch("/player/deck/get");
+	console.log(response);
+	response = await response.json();
+	
+
+	if(API.verifyResponse(response)){ return false };
+	
+	return response;
+};
 
 Player.deck.list = async (empire_id) => {
 	let response = await fetch("/player/deck/list/"+empire_id);
