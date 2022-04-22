@@ -1,11 +1,23 @@
 const Card = require('../model/card');
+const Range = require('../model/range');
+const Empire = require('../model/empire');
+const Ability = require('../model/ability');
 
 const lib = require("jarmlib");
 
 const cardController = {};
 
+cardController.index = async (req, res) => {
+	let empires = await Empire.list();
+	let ranges = await Range.list();
+	let abilities = await Ability.list();
+
+	res.render('card/index', { empires, ranges, abilities });
+};
+
 cardController.create = async (req, res) => {
 	let card = new Card();
+	if(req.body.code) { card.code = req.body.code };
 	if(req.body.name) { card.name = req.body.name };
 	if(req.body.empire_id) { card.empire_id = req.body.empire_id };
 	if(req.body.range_id) { card.range_id = req.body.range_id };

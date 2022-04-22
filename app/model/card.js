@@ -3,6 +3,7 @@ const lib = require("jarmlib");
 
 const Card = function() {
 	this.id;
+	this.code;
 	this.name;
 	this.range_id
 	this.empire_id;
@@ -10,6 +11,7 @@ const Card = function() {
 	this.image;
 
 	this.save = () => {
+		if(!this.code) { return { err: "É necessário incluir o código da carta" } };
 		if(!this.name) { return { err: "É necessário incluir o nome da carta" } };
         if(!this.range_id) { return { err: "É necessário incluir a distância de combate da carta" } };
         if(!this.image) { return { err: "É necessário selecionar a imagem da carta" } };

@@ -18,6 +18,7 @@ router.get("/empire/list", lib.route.toHttps, empireController.list);
 
 router.get("/deck-menu", lib.route.toHttps, pathController.deckMenu);
 
+router.get("/card", lib.route.toHttps, cardController.index);
 router.get("/card/list", lib.route.toHttps, cardController.list);
 router.get("/card/filter/:empire_id", lib.route.toHttps, cardController.filter);
 
