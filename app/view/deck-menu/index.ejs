@@ -3,29 +3,42 @@
 <head>
 	<% include ./../partials/head %>
 </head>
-<body style="background-color: #222">
+<body style="background-color: #222;">
 	<div id="deck-menu" class="container">
-		<div class="box a1 height-100"></div>
+		<!-- empire select -->
+		<div class="box b1 container min-height-100 margin-top-10 radius-5">
+			<% include ./components/empire-select %>
+		</div>
+
 		<!-- deck collection -->
 		<div class="box b2-5 container padding-10 radius-5 h-center">
 			<% include ./components/collection-filter %>
-			<div id="deck-collection" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-350 scroll-y"></div>
+			<div id="deck-collection" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-450 scroll-y"></div>
 		</div>
-		
+
 		<!-- leader -->
-		<div id="leader" class="box b5 container padding-10 radius-5 h-center max-height-300">
-			
+		<div id="leader" class="box b5 container padding-10 radius-5 h-center max-height-450">
+
 		</div>
 
 		<!-- deck main -->
 		<div class="box b2-5 container padding-10 radius-5 h-center">
 			<% include ./components/main-filter %>
-			<div id="deck-main" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-350 scroll-y"></div>
+			<div id="deck-main" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-450 scroll-y"></div>
 		</div>
 	</div>
+	<% include ./../partials/loader %>
 </body>
 <% include ./../partials/lib %>
-<script src="js/deck.js"></script>
-<script src="js/card.js"></script>
-<script src="js/deck-menu.js"></script>
+<script src="js/deck/model.js"></script>
+<script src="js/deck/main.js"></script>
+<script src="js/card/model.js"></script>
+<script src="js/card/main.js"></script>
+<script src="js/player/model.js"></script>
+<script src="js/empire/model.js"></script>
+<script src="js/empire/main.js"></script>
+<script src="js/deck-menu/deck.js"></script>
+<script src="js/deck-menu/card.js"></script>
+<script src="js/deck-menu/empire.js"></script>
+<script src="js/deck-menu/main.js"></script>
 </html>

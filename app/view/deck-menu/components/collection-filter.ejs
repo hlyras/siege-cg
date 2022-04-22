@@ -1,7 +1,7 @@
 <div id="collection-deck-filter" class="box b1 container noselect">
-	<div onclick="Deck.collection.filter('', 'Card.switchToMain')" class="mobile-box b5 container center"><img class="size-35 opacity-out-08 center" src="image/icon/range/cards-white.png"></div>
-	<div onclick="Deck.collection.filter('close', 'Card.switchToMain')" class="mobile-box b5 container center"><img class="size-35 opacity-out-08 center" src="image/icon/range/close-white.png"></div>
-	<div onclick="Deck.collection.filter('ranged', 'Card.switchToMain')" class="mobile-box b5 container center"><img class="size-35 opacity-out-08 center" src="image/icon/range/ranged-white.png"></div>
-	<div onclick="Deck.collection.filter('siege', 'Card.switchToMain')" class="mobile-box b5 container center"><img class="size-35 opacity-out-08 center" src="image/icon/range/siege-white.png"></div>
-	<div onclick="Deck.collection.filter('agile', 'Card.switchToMain')" class="mobile-box b5 container center"><img class="size-35 opacity-out-08 center" src="image/icon/range/agile-white.png"></div>
+	<div id="deck-collection-category" class="box b1 em08 lucida-grande bold opacity-08 padding-left-15 margin-bottom-5" style="color:#fff;">Todas as cartas</div>
+	<div class="mobile-box b5 container center"><img onclick="Deck.collection.filter('', 'Card.switchToMain')" class="size-35 opacity-out-08 center cursor-2" src="image/icon/range/cards-white.png"></div>
+	<% for(let i in ranges){ %>
+		<div class="mobile-box b5 container center"><img onclick="Deck.collection.filter('<%= ranges[i].id %>', '<%= ranges[i].description %>', 'Card.switchToMain')" class="size-35 opacity-out-08 center cursor-2" src="<%= ranges[i].image_white %>"></div>
+	<% } %>
 </div>

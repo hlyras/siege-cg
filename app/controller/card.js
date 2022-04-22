@@ -1,5 +1,6 @@
 const Card = require('../model/card');
-const cards = require('../model/cards');
+
+const lib = require("jarmlib");
 
 const cardController = {};
 
@@ -10,12 +11,74 @@ cardController.create = async (req, res) => {
 	if(req.body.range_id) { card.range_id = req.body.range_id };
 	if(req.body.ability_id) { card.ability_id = req.body.ability_id };
 	if(req.body.image) { card.image = req.body.image };
-
-	res.send({ done: "Carta criada com sucesso!" });
+	
+	try {
+		await card.save();
+		res.send({ done: "Carta criada com sucesso!" });
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: 'Ocorreu um erro ao criar carta.' });
+	};
 };
 
 cardController.list = async (req, res) => {
-	res.send({ cards });
+	let props = [
+		'cards.*',
+		'ranges.name range_name',
+		'ranges.description range_description',
+		'ranges.image range_image',
+		'ranges.image_white range_image_white',
+		'abilities.name ability_name',
+		'abilities.image ability_image',
+		'abilities.image_white ability_image_white'
+	];
+
+	let inners = [
+		['siege.ranges ranges', 'siege.ranges.id', 'cards.range_id'],
+		['siege.abilities abilities', 'cards.ability_id', 'siege.abilities.id']
+	];
+	
+	let orderParams = [ ["code","ASC"] ];
+
+	try {
+		let cards = await Card.filter(props, inners, [], [], orderParams, 0);
+		res.send(cards);
+	} catch (err) {
+		console.log(err);
+		res.send('msg: Ocorreu um erro ao listar cartas');
+	}
+};
+
+cardController.filter = async (req, res) => {
+	let strictParams = { keys: [], values: [] };
+	
+	let props = [
+		'cards.*',
+		'ranges.name range_name',
+		'ranges.description range_description',
+		'ranges.image range_image',
+		'ranges.image_white range_image_white',
+		'abilities.name ability_name',
+		'abilities.image ability_image',
+		'abilities.image_white ability_image_white'
+	];
+
+	let inners = [
+		['siege.ranges ranges', 'siege.ranges.id', 'cards.range_id'],
+		['siege.abilities abilities', 'cards.ability_id', 'siege.abilities.id']
+	];
+
+	lib.Query.fillParam("cards.empire_id", req.params.empire_id, strictParams);
+
+	let orderParams = [ ["code","ASC"] ];
+
+	try {
+		let cards = await Card.filter(props, inners, [], strictParams, orderParams, 0);
+		res.send(cards);
+	} catch (err) {
+		console.log(err);
+		res.send('msg: Ocorreu um erro ao listar cartas');
+	}
 };
 
 module.exports = cardController;
