@@ -1,3 +1,15 @@
+Deck.render = (deck, box, switchTo, fromDeck) => {
+	let deckbox = document.getElementById(box);
+	deckbox.innerHTML = "";
+
+	let cards = lib.sort(deck, 'code', 'ASC');
+
+	for(let i in cards) {
+		Card.draw(deckbox, cards[i], switchTo, fromDeck);
+	};
+};
+
+// Collection
 Deck.collection.setCategory = (range_id, range_description) => {
 	Deck.collection.category = range_id;
 	document.getElementById("deck-collection-category").innerHTML = "Todas as cartas";
@@ -19,6 +31,12 @@ Deck.collection.render = (switchTo, fromDeck) => {
 	};
 };
 
+Deck.collection.filter = (range_id, range_name) => {
+	Deck.collection.setCategory(range_id, range_name);
+	Deck.collection.render('Card.switchToMain');
+};
+
+// Main
 Deck.main.setCategory = (range_id, range_description) => {
 	Deck.main.category = range_id;
 	document.getElementById("deck-main-category").innerHTML = "Todas as cartas";
@@ -38,4 +56,9 @@ Deck.main.render = (switchTo, fromDeck) => {
 			Card.draw(deckBox, Deck.main.cards[i], switchTo, fromDeck);
 		}
 	};
+};
+
+Deck.main.filter = (range_id, range_name) => {
+	Deck.main.setCategory(range_id, range_name);
+	Deck.main.render('Card.switchToMain');
 };

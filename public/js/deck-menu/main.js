@@ -1,13 +1,3 @@
-Deck.collection.filter = (range_id, range_name) => {
-	Deck.collection.setCategory(range_id, range_name);
-	Deck.collection.render('Card.switchToMain');
-};
-
-Deck.main.filter = (range_id, range_name) => {
-	Deck.main.setCategory(range_id, range_name);
-	Deck.main.render('Card.switchToMain');
-};
-
 Card.switchToCollection = async (card_id) => {
 	let response = await API.response(Player.deck.remove, card_id);
 	if(!response) { return false; }
@@ -40,8 +30,6 @@ Deck.render = async () => {
 	
 	let player_deck = await API.response(Player.deck.get);
 	if(!player_deck) { return false; }
-
-	console.log(player_deck);
 
 	Empire.render(empires, player_deck.empire_id - 1, "empire-carousel");
 };

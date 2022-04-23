@@ -15,17 +15,25 @@ cardController.index = async (req, res) => {
 	res.render('card/index', { empires, ranges, abilities });
 };
 
-cardController.create = async (req, res) => {
+cardController.save = async (req, res) => {
 	let card = new Card();
+	if(req.body.id) { card.id = req.body.id };
 	if(req.body.code) { card.code = req.body.code };
 	if(req.body.name) { card.name = req.body.name };
 	if(req.body.empire_id) { card.empire_id = req.body.empire_id };
 	if(req.body.range_id) { card.range_id = req.body.range_id };
+	if(req.body.hero) { card.hero = req.body.hero };
+	if(req.body.power) { card.power = req.body.power };
 	if(req.body.ability_id) { card.ability_id = req.body.ability_id };
 	if(req.body.image) { card.image = req.body.image };
 	
+	console.log(req.body);
+	console.log(card);
+
 	try {
-		await card.save();
+		let response = await card.save();
+		if(response.err) { return res.send({ msg: response.err }); }
+		console.log(response);
 		res.send({ done: "Carta criada com sucesso!" });
 	} catch (err) {
 		console.log(err);
@@ -61,7 +69,55 @@ cardController.list = async (req, res) => {
 	}
 };
 
+cardController.findById = async (req, res) => {
+	try {
+		let card = await Card.findById(req.params.id);
+		res.send(card);
+	} catch (err) {
+		console.log(err);
+		res.send('msg: Ocorreu um erro ao listar cartas');
+	}
+};
+
 cardController.filter = async (req, res) => {
+	let props = [
+		'cards.*',
+		'ranges.name range_name',
+		'ranges.description range_description',
+		'ranges.image range_image',
+		'ranges.image_white range_image_white',
+		'abilities.name ability_name',
+		'abilities.image ability_image',
+		'abilities.image_white ability_image_white'
+	];
+
+	let inners = [
+		['siege.ranges ranges', 'siege.ranges.id', 'cards.range_id'],
+		['siege.abilities abilities', 'cards.ability_id', 'siege.abilities.id']
+	];
+
+	let params = { keys: [], values: [] };
+	let strictParams = { keys: [], values: [] };
+
+	lib.Query.fillParam("cards.code", req.params.code, strictParams);
+	lib.Query.fillParam("cards.name", req.params.name, params);
+	lib.Query.fillParam("cards.empire_id", req.params.empire_id, strictParams);
+	lib.Query.fillParam("cards.range_id", req.params.range_id, strictParams);
+	lib.Query.fillParam("cards.hero", req.params.hero, strictParams);
+	lib.Query.fillParam("cards.ability_id", req.params.ability_id, strictParams);
+
+	let orderParams = [ ["code","ASC"] ];
+
+	try {
+		let cards = await Card.filter(props, inners, params, strictParams, orderParams, 0);
+		res.send(cards);
+	} catch (err) {
+		console.log(err);
+		res.send('msg: Ocorreu um erro ao listar cartas');
+	}
+};
+
+cardController.findByEmpireId = async (req, res) => {
 	let strictParams = { keys: [], values: [] };
 	
 	let props = [

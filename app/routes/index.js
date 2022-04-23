@@ -19,8 +19,11 @@ router.get("/empire/list", lib.route.toHttps, empireController.list);
 router.get("/deck-menu", lib.route.toHttps, pathController.deckMenu);
 
 router.get("/card", lib.route.toHttps, cardController.index);
+router.post("/card/save", lib.route.toHttps, cardController.save);
+router.post("/card/filter", lib.route.toHttps, cardController.filter);
+router.get("/card/findById/:id", lib.route.toHttps, cardController.findById);
 router.get("/card/list", lib.route.toHttps, cardController.list);
-router.get("/card/filter/:empire_id", lib.route.toHttps, cardController.filter);
+router.get("/card/findByEmpire/:empire_id", lib.route.toHttps, cardController.findByEmpireId);
 
 
 module.exports = router;

@@ -14,6 +14,28 @@ Card.save = async (card) => {
 	return response;
 };
 
+Card.filter = async (card) => {
+	let cards = await fetch("/card/filter", {
+		method: "POST",
+		headers: {'Content-Type': 'application/json'},
+	    body: JSON.stringify(card)
+	});
+	cards = await cards.json();
+
+	if(API.verifyResponse(cards)){ return false };
+
+	return cards;
+};
+
+Card.findById = async (card_id) => {
+	let response = await fetch("/card/findById/"+card_id);
+	response = await response.json();
+	
+	if(API.verifyResponse(response)){ return false };
+	
+	return response[0];
+};
+
 Card.list = async () => {
 	let response = await fetch("/card/list");
 	response = await response.json();
@@ -23,8 +45,8 @@ Card.list = async () => {
 	return response.cards;
 };
 
-Card.filter = async (empire_id) => {
-	let response = await fetch("/card/filter/"+empire_id);
+Card.findByEmpireId = async (empire_id) => {
+	let response = await fetch("/card/findByEmpire/"+empire_id);
 	response = await response.json();
 	
 	if(API.verifyResponse(response)){ return false };

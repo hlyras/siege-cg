@@ -5,58 +5,98 @@
 </head>
 <body style="background-color: #222;">
 	<div class="container">
-		<form class="box b2 container padding-10 margin-top-10 border">
-			<div class="box b2 margin-top-10">
-				<div class="box b1 lucida-grande em08 bold" style="color:#f0f0f0;">Código</div>
-				<input type="text" name="code" class="box b1 input-generic nofocus" placeholder="Código da Carta" autocomplete="off">
-			</div>
-			
-			<div class="box b2 margin-top-10">
-				<div class="box b1 lucida-grande em08 bold" style="color:#f0f0f0;">Nome</div>
-				<input type="text" name="name" class="box b1 input-generic nofocus" placeholder="Nome da Carta" autocomplete="off">
-			</div>
-			
-			<div class="box b2 margin-top-10">
-				<div class="box b1 lucida-grande em08 bold" style="color:#f0f0f0;">Classe</div>
-				<select name="hero" class="box b1 input-generic nofocus border">
-					<option value='0'>Comum</option>
-					<option value='1'>Herói</option>
-				</select>
-			</div>
+		<form id="card-create-form" class="box b2 container border padding-10 margin-top-10">
+			<div class="box b1 lucida-grande bold center" style="color:#f0f0f0;">Criar carta</div>
+			<input type="hidden" name="id" value="">
 
-			<div class="box b2 margin-top-10">
-				<div class="box b1 lucida-grande em08 bold" style="color:#f0f0f0;">Império</div>
-				<select name="range" class="box b1 input-generic nofocus border cursor-2">
-					<% for(let i in empires) { %>
-						<option value='<%= empires[i].id %>'><%= empires[i].name %></option>
-					<% } %>
-				</select>
-			</div>
+			<input type="text" name="code" class="box b4 input-generic nofocus center margin-top-5" placeholder="Código da Carta" autocomplete="off">
 
-			<div class="box b2 margin-top-10">
-				<div class="box b1 lucida-grande em08 bold" style="color:#f0f0f0;">Distância de combate</div>
-				<select name="range" class="box b1 input-generic nofocus border cursor-2">
-					<option value='0'>Especial</option>
-					<% for(let i in ranges) { %>
-						<option value='<%= ranges[i].id %>'><%= ranges[i].description %></option>
-					<% } %>
-				</select>
-			</div>
+			<input type="text" name="power" class="box b4 input-generic nofocus center margin-top-5" placeholder="Poder da carta" autocomplete="off">
+		
+			<input type="text" name="name" class="box b2 input-generic nofocus center margin-top-5" placeholder="Nome da Carta" autocomplete="off">
+		
+			<select name="empire" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<% for(let i in empires) { %>
+					<option value='<%= empires[i].id %>'><%= empires[i].name %></option>
+				<% } %>
+			</select>
 
-			<div class="box b2 margin-top-10">
-				<div class="box b1 lucida-grande em08 bold" style="color:#f0f0f0;">Habilidade</div>
-				<select name="range" class="box b1 input-generic nofocus border cursor-2">
-					<option value='0'>Nenhuma</option>
-					<% for(let i in abilities) { %>
-						<option value='<%= abilities[i].id %>'><%= abilities[i].name %></option>
-					<% } %>
-				</select>
-			</div>
+			<select name="range" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<option value='0'>Especial</option>
+				<% for(let i in ranges) { %>
+					<option value='<%= ranges[i].id %>'><%= ranges[i].description %></option>
+				<% } %>
+			</select>
 
-			<input type="button" name="button" class="box b1 submit-generic margin-top-10 cursor-2" value="Cadastrar Carta">
+			<select name="hero" class="box b2 input-generic nofocus center margin-top-5 border">
+				<option value='0'>Comum</option>
+				<option value='1'>Herói</option>
+			</select>
+
+			<select name="ability" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<option value='0'>Nenhuma</option>
+				<% for(let i in abilities) { %>
+					<option value='<%= abilities[i].id %>'><%= abilities[i].name %></option>
+				<% } %>
+			</select>
+
+			<input type="text" name="image" class="box b2 input-generic margin-top-5 center cursor-2" placeholder="URL da Imagem">
+
+			<input type="submit" name="submit" class="box b2 submit-generic margin-top-5 cursor-2" value="Cadastrar Carta">
 		</form>
+
+		<form id="card-filter-form" class="box b2 container border padding-10 margin-top-10">
+			<div class="box b1 lucida-grande bold center" style="color:#f0f0f0;">Filtrar cartas</div>
+			<input type="text" name="code" class="box b2 input-generic nofocus center margin-top-5" placeholder="Código da Carta" autocomplete="off">
+
+			<input type="text" name="power" class="box b2 input-generic nofocus center margin-top-5" placeholder="Poder da carta" autocomplete="off">
+			
+			<input type="text" name="name" class="box b2 input-generic nofocus center margin-top-5" placeholder="Nome da Carta" autocomplete="off">
+			
+			<select name="empire" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<% for(let i in empires) { %>
+					<option value='<%= empires[i].id %>'><%= empires[i].name %></option>
+				<% } %>
+			</select>
+
+			<select name="range" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<option value='0'>Especial</option>
+				<% for(let i in ranges) { %>
+					<option value='<%= ranges[i].id %>'><%= ranges[i].description %></option>
+				<% } %>
+			</select>
+
+			<select name="hero" class="box b2 input-generic nofocus center margin-top-5 border">
+				<option value='0'>Comum</option>
+				<option value='1'>Herói</option>
+			</select>
+
+			<select name="ability" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<option value='0'>Nenhuma</option>
+				<% for(let i in abilities) { %>
+					<option value='<%= abilities[i].id %>'><%= abilities[i].name %></option>
+				<% } %>
+			</select>
+
+			<input type="submit" name="submit" class="box b2 submit-generic margin-top-5 cursor-2" value="Filtrar Cartas">
+		</form>
+
+		<div class="box b1 container padding-10 radius-5 h-center">
+			<% include ./../deck-menu/components/collection-filter %>
+			<div id="deck-collection" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-450 scroll-y"></div>
+		</div>
+
 	</div>
 	<% include ./../partials/loader %>
 </body>
 <% include ./../partials/lib %>
+<script src="js/deck/model.js"></script>
+<script src="js/card/model.js"></script>
+
+<script src="js/deck/main.js"></script>
+<script src="js/card/main.js"></script>
+
+<script src="js/card/controller.js"></script>
+
+
 </html>
