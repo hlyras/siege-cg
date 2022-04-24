@@ -16,10 +16,8 @@ Player.deck = {};
 
 Player.deck.get = async (empire) => {
 	let response = await fetch("/player/deck/get");
-	console.log(response);
 	response = await response.json();
 	
-
 	if(API.verifyResponse(response)){ return false };
 	
 	return response;

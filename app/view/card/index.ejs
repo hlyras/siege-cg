@@ -60,6 +60,7 @@
 			</select>
 
 			<select name="range" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<option value=''>Distância de combate</option>
 				<option value='0'>Especial</option>
 				<% for(let i in ranges) { %>
 					<option value='<%= ranges[i].id %>'><%= ranges[i].description %></option>
@@ -67,11 +68,13 @@
 			</select>
 
 			<select name="hero" class="box b2 input-generic nofocus center margin-top-5 border">
+				<option value=''>Classe da carta</option>
 				<option value='0'>Comum</option>
 				<option value='1'>Herói</option>
 			</select>
 
 			<select name="ability" class="box b2 input-generic nofocus center margin-top-5 border cursor-2">
+				<option value=''>Abilidade</option>
 				<option value='0'>Nenhuma</option>
 				<% for(let i in abilities) { %>
 					<option value='<%= abilities[i].id %>'><%= abilities[i].name %></option>
@@ -82,7 +85,6 @@
 		</form>
 
 		<div class="box b1 container padding-10 radius-5 h-center">
-			<% include ./../deck-menu/components/collection-filter %>
 			<div id="deck-collection" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-450 scroll-y"></div>
 		</div>
 

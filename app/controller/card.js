@@ -26,16 +26,21 @@ cardController.save = async (req, res) => {
 	if(req.body.power) { card.power = req.body.power };
 	if(req.body.ability_id) { card.ability_id = req.body.ability_id };
 	if(req.body.image) { card.image = req.body.image };
-	
-	console.log(req.body);
-	console.log(card);
 
 	try {
-		let response = await card.save();
-		if(response.err) { return res.send({ msg: response.err }); }
-		console.log(response);
-		res.send({ done: "Carta criada com sucesso!" });
+		if(!card.id) {
+			let response = await card.save();
+			if(response.err) { return res.send({ msg: response.err }); }
+			console.log(response);
+			res.send({ done: "Carta criada com sucesso!" });
+		} else {
+			let response = await card.update();
+			if(response.err) { return res.send({ msg: response.err }); }
+			console.log(response);
+			res.send({ done: "Carta atualizada com sucesso!" });
+		}
 	} catch (err) {
+		if(err.code == "ER_DUP_ENTRY") { return res.send({ msg: "Duplicidade para: "+err.sqlMessage.split("'")[1] }); } 
 		console.log(err);
 		res.send({ msg: 'Ocorreu um erro ao criar carta.' });
 	};
@@ -99,12 +104,12 @@ cardController.filter = async (req, res) => {
 	let params = { keys: [], values: [] };
 	let strictParams = { keys: [], values: [] };
 
-	lib.Query.fillParam("cards.code", req.params.code, strictParams);
-	lib.Query.fillParam("cards.name", req.params.name, params);
-	lib.Query.fillParam("cards.empire_id", req.params.empire_id, strictParams);
-	lib.Query.fillParam("cards.range_id", req.params.range_id, strictParams);
-	lib.Query.fillParam("cards.hero", req.params.hero, strictParams);
-	lib.Query.fillParam("cards.ability_id", req.params.ability_id, strictParams);
+	lib.Query.fillParam("cards.code", req.body.code, strictParams);
+	lib.Query.fillParam("cards.name", req.body.name, params);
+	lib.Query.fillParam("cards.empire_id", req.body.empire_id, strictParams);
+	lib.Query.fillParam("cards.range_id", req.body.range_id, strictParams);
+	lib.Query.fillParam("cards.hero", req.body.hero, strictParams);
+	lib.Query.fillParam("cards.ability_id", req.body.ability_id, strictParams);
 
 	let orderParams = [ ["code","ASC"] ];
 

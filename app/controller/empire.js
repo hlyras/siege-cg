@@ -5,15 +5,9 @@ const lib = require("jarmlib");
 
 const empireController = {};
 
-// mock user
-let user = {
-	empire_id: 2,
-	leader_id: 3,
-};
-
 empireController.get = async (req, res) => {
 	try {
-		let empire = await Empire.get(user.empire_id);
+		let empire = await Empire.get(1);
 
 		console.log(empire);
 

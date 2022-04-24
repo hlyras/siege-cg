@@ -5,6 +5,7 @@ const pathController = require("../controller/path");
 const playerController = require("../controller/player");
 const cardController = require("../controller/card");
 const empireController = require("../controller/empire");
+const leaderController = require("../controller/leader");
 
 router.get("/", lib.route.toHttps, pathController.index);
 
@@ -25,5 +26,6 @@ router.get("/card/findById/:id", lib.route.toHttps, cardController.findById);
 router.get("/card/list", lib.route.toHttps, cardController.list);
 router.get("/card/findByEmpire/:empire_id", lib.route.toHttps, cardController.findByEmpireId);
 
+router.get("/leader/findByEmpire/:empire_id", lib.route.toHttps, leaderController.findByEmpireId);
 
 module.exports = router;

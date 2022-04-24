@@ -19,9 +19,20 @@ const Card = function() {
         let obj = lib.convertTo.object(this);
 		let query = lib.Query.save(obj, 'siege.cards');
 
+        return db(query);
+	};
+
+	this.update = () => {
+		if(!this.id) { return { err: "O id da carta é inválido" }; }
+		if(!this.code || this.code.length < 1 || this.code.length > 5) { return { err: "Código inválido" }; }
+		if(!this.name || this.name.length < 1 || this.name.length > 40) { return { err: "Nome inválido" }; }
+
+		let obj = lib.convertTo.object(this);
+		let query = lib.Query.update(obj, 'siege.cards', 'id');
+
 		console.log(query);
 
-        return db(query);
+    	return db(query);
 	};
 };
 

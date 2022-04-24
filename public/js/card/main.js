@@ -79,7 +79,7 @@ Card.draw = (deck, card, switchTo, fromDeck) => {
 	});
 
 	infoContainer.append(lib.element.create("div", {
-		class: "lucida-grande em07 bold center cursor-2"
+		class: "lucida-grande em07 padding-3 bold center cursor-2"
 	}, card.name));
 
 	cardBox.append(imageContainer);

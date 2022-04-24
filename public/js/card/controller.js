@@ -20,14 +20,21 @@ if(Card.controller.create) {
 		let response = await API.response(Card.save, card);
 		if(!response) { return false; }
 
-		console.log(response);
+		e.target.elements.namedItem('id').value = "";
+		e.target.elements.namedItem('code').value = "";
+		e.target.elements.namedItem('name').value = "";
+		e.target.elements.namedItem('range').value = "";
+		e.target.elements.namedItem('hero').value = "0";
+		e.target.elements.namedItem('power').value = "";
+		e.target.elements.namedItem('ability').value = "";
+		e.target.elements.namedItem('image').value = "";
+
+		Card.controller.filter.submit.click();
 	});
 }
 
 Card.controller.edit = async (card_id, param) => {
-	console.log(card_id);
 	let card = await API.response(Card.findById, card_id);
-	console.log(card);
 	if(!card) { return false; }
 
 	Card.controller.create.elements.namedItem("id").value = card.id;
