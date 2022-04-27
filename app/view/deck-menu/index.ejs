@@ -4,6 +4,8 @@
 	<% include ./../partials/head %>
 </head>
 <body style="background-color: #222;">
+	<% include ./components/detail-leader %>
+	<% include ./components/detail-card %>
 	<div id="deck-menu" class="container">
 		<!-- empire select -->
 		<div class="box b1 container min-height-100 margin-top-10 radius-5">
@@ -17,8 +19,9 @@
 		</div>
 
 		<!-- leader -->
-		<div id="leader" class="box b5 container padding-10 radius-5 h-center max-height-450">
-
+		<div id="leader" class="box b5 container radius-5 h-center max-height-450 margin-top-30">
+			<% include ./components/leader-select %>
+			<% include ./components/deck-info %>
 		</div>
 
 		<!-- deck main -->
@@ -30,18 +33,15 @@
 	<% include ./../partials/loader %>
 </body>
 <% include ./../partials/lib %>
-<script src="js/deck/model.js"></script>
-<script src="js/deck/main.js"></script>
-<script src="js/card/model.js"></script>
-<script src="js/card/main.js"></script>
-<script src="js/player/model.js"></script>
-<script src="js/empire/model.js"></script>
-<script src="js/empire/main.js"></script>
-<script src="js/leader/model.js"></script>
-<script src="js/leader/main.js"></script>
+<script src="js/model/empire.js"></script>
+<script src="js/model/card.js"></script>
+<script src="js/model/player.js"></script>
+<script src="js/model/leader.js"></script>
+
 <script src="js/deck-menu/deck.js"></script>
-<script src="js/deck-menu/card.js"></script>
 <script src="js/deck-menu/empire.js"></script>
+<script src="js/deck-menu/card.js"></script>
 <script src="js/deck-menu/leader.js"></script>
 <script src="js/deck-menu/main.js"></script>
+
 </html>

@@ -11,10 +11,9 @@ Player.empire.set = async (empire_id) => {
 	return response;
 };
 
-
 Player.deck = {};
 
-Player.deck.get = async (empire) => {
+Player.deck.get = async () => {
 	let response = await fetch("/player/deck/get");
 	response = await response.json();
 	
@@ -43,6 +42,26 @@ Player.deck.add = async (card_id) => {
 
 Player.deck.remove = async (card_id) => {
 	let response = await fetch("/player/deck/remove/"+card_id);
+	response = await response.json();
+	
+	if(API.verifyResponse(response)){ return false };
+	
+	return response;
+};
+
+Player.leader = {};
+
+Player.leader.get = async () => {
+	let response = await fetch("/player/leader/get");
+	response = await response.json();
+	
+	if(API.verifyResponse(response)){ return false };
+	
+	return response;
+};
+
+Player.leader.set = async (leader_id) => {
+	let response = await fetch("/player/leader/set/"+leader_id);
 	response = await response.json();
 	
 	if(API.verifyResponse(response)){ return false };

@@ -17,6 +17,11 @@ Leader.findById = (leader_id) => {
 	return db(query);
 };
 
+Leader.findByEmpireId = (empire_id) => {
+	let query = "SELECT * FROM siege.leaders WHERE empire_id ='"+empire_id+"';";
+	return db(query);
+};
+
 Leader.filter = (props, inners, params, strict_params, order_params, limit) => {
 	let query = new lib.Query().select().props(props).table("siege.leaders leaders")
 		.left(inners).params(params).strictParams(strict_params).order(order_params).limit(limit).build().query;

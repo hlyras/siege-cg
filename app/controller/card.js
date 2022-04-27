@@ -12,7 +12,7 @@ cardController.index = async (req, res) => {
 	let ranges = await Range.list();
 	let abilities = await Ability.list();
 
-	res.render('card/index', { empires, ranges, abilities });
+	res.render('card-menu/index', { empires, ranges, abilities });
 };
 
 cardController.save = async (req, res) => {

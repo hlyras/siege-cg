@@ -41,4 +41,21 @@ Player.deck.findByUserId = (user_id) => {
 	return db(query);
 };
 
+Player.leader = {};
+
+Player.leader.save = (user_id, empire_id, leader_id) => {
+	let query = "INSERT INTO siege.player_deck_leader (player_id, empire_id, leader_id) VALUES ('"+user_id+"','"+empire_id+"','"+leader_id+"');";
+	return db(query);
+};
+
+Player.leader.set = (user_id, empire_id, leader_id) => {
+	let query = "UPDATE siege.player_deck_leader SET leader_id ='"+leader_id+"' WHERE player_id ='"+user_id+"' AND empire_id='"+empire_id+"';";
+	return db(query);
+};
+
+Player.leader.findByEmpireId = (user_id, empire_id) => {
+	let query = "SELECT * FROM siege.player_deck_leader WHERE player_id ='"+user_id+"' AND empire_id='"+empire_id+"';";
+	return db(query);
+};
+
 module.exports = Player;

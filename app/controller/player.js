@@ -1,6 +1,7 @@
 const playerController = {};
 
 const Card = require('../model/card');
+const Leader = require('../model/leader');
 const Player = require('../model/player');
 
 playerController.index = async (req, res) => {
@@ -65,6 +66,42 @@ playerController.deck.remove = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.send({ msg: 'Ocorreu um erro ao adicionar a carta.' });
+	}
+};
+
+playerController.leader = {};
+
+playerController.leader.get = async (req, res) => {
+	try {
+		let player_deck = (await Player.deck.findByUserId(1))[0];
+		
+		let player_leader = (await Player.leader.findByEmpireId(1, player_deck.empire_id))[0];
+
+		if(!player_leader) {
+			let empire_leaders = await Leader.findByEmpireId(player_deck.empire_id) 
+			await Player.leader.save(1, player_deck.empire_id, empire_leaders[0].id); 
+			player_leader = { leader_id: empire_leaders[0].id };
+		}
+
+		res.send(player_leader);
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: "Ocorreu um erro favor recarregar a página." });
+	}
+};
+
+playerController.leader.set = async (req, res) => {
+	try {
+		let leader = (await Leader.findById(req.params.leader_id))[0];
+
+		let player_deck = (await Player.deck.findByUserId(1))[0];
+
+		if(leader.empire_id != player_deck.empire_id) { return res.send({ "msg": "Ocorreu um erro ao alterar o líder, por favor recarregue a página e tente novamente." }) }
+		await Player.leader.set(1, player_deck.empire_id, leader.id); 
+		res.send(leader);
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: "Ocorreu um erro favor recarregar a página." });
 	}
 };
 

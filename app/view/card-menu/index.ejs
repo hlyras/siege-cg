@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include ./../partials/head %>
+</head>
+<body style="background-color: #222;">
+	<div class="container">
+		<div class="box b2 container margin-top-10">
+			<% include ./components/card-create-form %>
+		</div>
+
+		<div class="box b2 container margin-top-10">
+			<% include ./components/card-filter-form %>
+		</div>
+	</div>
+
+	<div class="box b1 container padding-10 radius-5 h-center">
+		<div id="card-filter-box" class="box b1 container margin-top-10 padding-10 radius-5 h-center max-height-450 scroll-y"></div>
+	</div>
+
+	<% include ./../partials/loader %>
+</body>
+<% include ./../partials/lib %>
+<script src="js/model/card.js"></script>
+<script src="js/card-menu/card.js"></script>
+</html>
