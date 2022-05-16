@@ -12,6 +12,11 @@ const Player = function () {
 	this.loses;
 };
 
+Player.findById = (user_id) => {
+	let query = "SELECT * FROM siege.player WHERE id ='"+user_id+"';";
+	return db(query);
+};
+
 Player.empire = {};
 
 Player.empire.set = (empire_id, user_id) => {

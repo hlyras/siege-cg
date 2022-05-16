@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ("./../partials/head") %>
+	<script src='/socket.io/socket.io.js'></script>
+
+	<style type="text/css">
+		.loader {
+			border: 8px solid var(--ground);
+			border-top: 8px solid var(--light);
+			border-bottom: 8px solid var(--light);
+			-webkit-animation: spin 2s linear infinite; /* Safari */
+			animation: spin 2s linear infinite;
+		}
+	</style>
+</head>
+<body class="container noselect" style="background-color: #18191a;">
+	<a class="box b4 lucida-grande bold opacity-out-08 padding-top-20 padding-left-20 cursor-2" href="/" style="color:#fff;">Home</a>
+
+	<section class="box b2 border container padding-10 margin-top-50 h-center">
+		<div class="mobile-box b2 container">
+			<div class="mobile-box lucida-grande em12 bold center" style="color:#f0f0f0;">Buscando Partida</div>
+			<div class="mobile-box size-30 loader center"></div>
+		</div>
+		<div class="box b1 lucida-grande em09 center" style="color:#f0f0f0;">Encontraremos uma batalha épica para você!</div>
+	</section>
+
+</body>
+
+<%- include ("./../partials/lib") %>
+<script src="js/model/player.js"></script>
+
+<script src='js/match/connection.js'></script>
+
+</html>

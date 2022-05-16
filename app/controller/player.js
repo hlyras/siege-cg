@@ -8,6 +8,16 @@ playerController.index = async (req, res) => {
 	res.render('index');
 };
 
+playerController.get = async (req, res) => {
+	try {
+		let player = (await Player.findById(1))[0];
+		res.send(player);
+	} catch (err) {
+		console.log(err);
+		res.send({ msg: "Ocorreu um erro favor recarregar a página." });
+	}
+};
+
 playerController.empire = {};
 
 playerController.empire.set = async (req, res) => {

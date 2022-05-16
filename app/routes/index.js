@@ -8,6 +8,12 @@ const empireController = require("../controller/empire");
 const leaderController = require("../controller/leader");
 
 router.get("/", lib.route.toHttps, pathController.index);
+router.get("/queue", lib.route.toHttps, pathController.queue);
+router.get("/match", lib.route.toHttps, pathController.match);
+router.get("/deck-menu", lib.route.toHttps, pathController.deckMenu);
+router.get("/card-menu", lib.route.toHttps, pathController.cardMenu);
+
+router.get("/player/get", lib.route.toHttps, playerController.get);
 
 router.get("/player/deck/get", lib.route.toHttps, playerController.deck.get);
 router.get("/player/leader/get", lib.route.toHttps, playerController.leader.get);
@@ -19,9 +25,6 @@ router.get("/player/deck/list/:empire_id", lib.route.toHttps, playerController.d
 
 router.get("/empire/list", lib.route.toHttps, empireController.list);
 
-router.get("/deck-menu", lib.route.toHttps, pathController.deckMenu);
-
-router.get("/card-menu", lib.route.toHttps, cardController.index);
 router.post("/card/save", lib.route.toHttps, cardController.save);
 router.post("/card/filter", lib.route.toHttps, cardController.filter);
 router.get("/card/findById/:id", lib.route.toHttps, cardController.findById);

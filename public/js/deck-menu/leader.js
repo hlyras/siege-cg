@@ -52,7 +52,8 @@ Leader.detail = (leader) => {
 
     // info container
     let infoContainer = lib.element.create("div", {
-        class: "mobile-box a1 ground center height-50 cursor-2"
+        class: "mobile-box a1 center height-50 cursor-2",
+        style: "color:#f0f0f0;"
     });
 
     infoContainer.append(lib.element.create("div", {
@@ -72,7 +73,7 @@ Leader.draw = {
     slide: (leader, leader_id, slide_box) => {
         let cardBox = lib.element.create("div", {
             'data-js': "leader-carousel-slide",
-            class: "mobile-box b1 max-width-125 margin-top-10 radius-15 opacity-out-08 cursor-2 noselect",
+            class: "mobile-box b1 max-width-125 margin-top-10 radius-15 cursor-2 noselect",
             style: leader.id != leader_id && "display:none;"
         });
 

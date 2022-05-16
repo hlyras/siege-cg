@@ -1,5 +1,14 @@
 const Player = {};
 
+Player.get = async () => {
+	let response = await fetch("/player/get");
+	response = await response.json();
+	
+	if(API.verifyResponse(response)){ return false; }
+	
+	return response;
+};
+
 Player.empire = {};
 
 Player.empire.set = async (empire_id) => {

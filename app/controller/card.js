@@ -7,14 +7,6 @@ const lib = require("jarmlib");
 
 const cardController = {};
 
-cardController.index = async (req, res) => {
-	let empires = await Empire.list();
-	let ranges = await Range.list();
-	let abilities = await Ability.list();
-
-	res.render('card-menu/index', { empires, ranges, abilities });
-};
-
 cardController.save = async (req, res) => {
 	let card = new Card();
 	if(req.body.id) { card.id = req.body.id };

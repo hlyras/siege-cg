@@ -65,10 +65,7 @@ if(Card.controller.filter) {
 		let cards = await API.response(Card.filter, card);
 		if(!cards) { return false; }
 
-		console.log(cards);
-
 		Card.view.filter(cards);
-		// Deck.render(cards, 'deck-collection', "Card.controller.edit", false);
 	});
 }
 
@@ -180,3 +177,5 @@ Card.view.filter = (cards) => {
 		Card.view.render(deck, cards[i]);
 	};
 };
+
+Card.controller.filter.submit.click();
