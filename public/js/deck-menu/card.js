@@ -1,13 +1,13 @@
 Card.drawPower = (imageContainer, card) => {
-    if(card.power) {
+    if (card.power) {
         let powerContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
         let powerBorder = lib.element.create("div", {
             class: "mobile-box container width-30 height-30 radius-30",
             style: card.hero && "border: 2px outset #fc6a03;background-color:#000;color:#fc6a03;" || !card.hero && "border: 2px outset #444;background-image: linear-gradient(to bottom right, #f0f0f0, #f0f0f0, #fff);"
         });
 
-        powerBorder.append(lib.element.create("div", { 
-            class: 'lucida-grande bold em08 center' 
+        powerBorder.append(lib.element.create("div", {
+            class: 'lucida-grande bold em08 center'
         }, card.power));
 
         powerContainer.append(powerBorder);
@@ -18,7 +18,7 @@ Card.drawPower = (imageContainer, card) => {
 };
 
 Card.drawRange = (imageContainer, card) => {
-    if(card.range_id) {
+    if (card.range_id) {
         let rangeContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
         let rangeBorder = lib.element.create("div", {
             style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #fc6a03, #fcae1e, #fcae1e);",
@@ -38,7 +38,7 @@ Card.drawRange = (imageContainer, card) => {
 };
 
 Card.drawAbility = (imageContainer, card) => {
-    if(card.ability_id) {
+    if (card.ability_id) {
         let abilityContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
         let abilityBorder = lib.element.create("div", {
             style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #f0f0f0, #f0f0f0, #fff);",
@@ -63,7 +63,7 @@ Card.draw = (deck, card, switchTo, fromDeck) => {
         onclick: `${switchTo}('${card.id}', '${fromDeck}')`,
     });
 
-    cardBox.addEventListener('contextmenu', function(ev) {
+    cardBox.addEventListener('contextmenu', function (ev) {
         ev.preventDefault();
         alert('success!');
         return false;
@@ -95,9 +95,9 @@ Card.draw = (deck, card, switchTo, fromDeck) => {
 
 Card.switchToCollection = async (card_id) => {
     let response = await API.response(Player.deck.remove, card_id);
-    if(!response) { return false; }
+    if (!response) { return false; }
 
-    for(let i in Deck.main.cards) {
+    for (let i in Deck.main.cards) {
         Deck.main.cards[i].id == card_id && Deck.collection.cards.push(Deck.main.cards[i]);
         Deck.main.cards[i].id == card_id && Deck.main.cards.splice(i, 1);
     };
@@ -108,9 +108,9 @@ Card.switchToCollection = async (card_id) => {
 
 Card.switchToMain = async (card_id) => {
     let response = await API.response(Player.deck.add, card_id);
-    if(!response) { return false; }
+    if (!response) { return false; }
 
-    for(let i in Deck.collection.cards) {
+    for (let i in Deck.collection.cards) {
         Deck.collection.cards[i].id == card_id && Deck.main.cards.push(Deck.collection.cards[i]);
         Deck.collection.cards[i].id == card_id && Deck.collection.cards.splice(i, 1);
     };
@@ -121,14 +121,14 @@ Card.switchToMain = async (card_id) => {
 
 Card.render = async (empire_id) => {
     let player_cards = await API.response(Player.deck.list, empire_id);
-    if(!player_cards) { return false; }
+    if (!player_cards) { return false; }
 
     let cards = await API.response(Card.findByEmpireId, empire_id);
-    if(!cards) { return alert("Ocorreu um erro, por favor recarregue a página.")}
+    if (!cards) { return alert("Ocorreu um erro, por favor recarregue a página.") }
 
-    for(let i in player_cards) {
-        for(let j in cards) {
-            if(player_cards[i].card_id == cards[j].id) {
+    for (let i in player_cards) {
+        for (let j in cards) {
+            if (player_cards[i].card_id == cards[j].id) {
                 player_cards[i] = cards[j];
                 cards.splice(j, 1);
             }

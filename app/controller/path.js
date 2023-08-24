@@ -1,36 +1,32 @@
 const pathController = {};
 
-// const match = require('../socket/match');
-
-const Range = require('../model/range');
-const Empire = require('../model/empire');
-const Ability = require('../model/ability');
-
-let user = {
-	id: 1,
-	name: 'Henrique Lyra'
-}
+const Reach = require('../model/reach/main');
+const Empire = require('../model/empire/main');
+const Ability = require('../model/ability/main');
 
 pathController.index = async (req, res) => {
-	res.render('index');
+	if (req.user) {
+		return res.render('index', { user: req.user });
+	};
+	res.render('user/login/index', { user: req.user });
 };
 
-pathController.cardMenu = async (req, res) => {
-	let empires = await Empire.list();
-	let ranges = await Range.list();
-	let abilities = await Ability.list();
-
-	res.render('card-menu/index', { empires, ranges, abilities });
+pathController.login = async (req, res) => {
+	if (req.user) {
+		return res.redirect("/");
+	};
+	res.render('user/login', { user: req.user, message: req.flash('loginMessage') });
 };
 
 pathController.deckMenu = async (req, res) => {
 	let empires = await Empire.list();
-	let ranges = await Range.list();
+	let reaches = await Reach.list();
 
-	res.render('deck-menu/index', { empires, ranges });
+	res.render('deck-menu/index', { empires, reaches });
 };
 
 pathController.queue = async (req, res) => {
+	console.log(req.app.get('socketio'));
 	res.render('match/queue');
 };
 
@@ -39,7 +35,9 @@ pathController.match = async (req, res) => {
 	// console.log(io);
 	// console.log(io);
 	// match.connection(io, user);
-	
+
+	// console.log(req.app.get('socketio'));
+
 	res.render('match/index');
 };
 

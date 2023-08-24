@@ -57,25 +57,25 @@ Menu.render = async () => {
 
 Menu.init = async () => {
 	let empires = await API.response(Empire.list);
-	if(!empires) { return alert("Ocorreu um erro, por favor recarregue a página.")}
+	if (!empires) { return alert("Ocorreu um erro, por favor recarregue a página.") }
 
 	let player_deck = await API.response(Player.deck.get);
-	if(!player_deck) { return false; }
+	if (!player_deck) { return false; }
 
 	let leaders = await API.response(Leader.findByEmpireId, player_deck.empire_id);
-	if(!leaders) { return false; }
+	if (!leaders) { return false; }
 
 	let player_leader = await API.response(Player.leader.get);
-	if(!player_leader) { return false; }
+	if (!player_leader) { return false; }
 
-	for(let i in leaders) {
-		if(leaders[i].id == player_leader.leader_id) {
+	for (let i in leaders) {
+		if (leaders[i].id == player_leader.leader_id) {
 			player_leader.position = i;
 		}
 	}
 
 	await Empire.render(empires, player_deck.empire_id - 1, "empire-carousel");
-    await Leader.render(leaders, player_leader.position, "leader-carousel");
+	await Leader.render(leaders, player_leader.position, "leader-carousel");
 };
 
 Menu.init();

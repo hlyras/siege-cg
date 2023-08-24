@@ -1,0 +1,35 @@
+<script>
+  document.getElementById("card-create-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    let card = {
+      id: e.target.id.value,
+      code: e.target.code.value,
+      name: e.target.name.value,
+      empire_id: e.target.empire_id.value,
+      reach_id: e.target.reach_id.value,
+      hero: e.target.hero.value,
+      power: e.target.power.value,
+      ability_id: e.target.ability_id.value,
+      image: e.target.image.value
+    };
+
+    let response = await API.response(Card.save, card);
+    if (!response) { return false; }
+
+    lib.message(response.done);
+
+    e.target.id.value = "";
+    e.target.code.value = "";
+    e.target.power.value = "";
+    e.target.name.value = "";
+    e.target.empire_id.value = "";
+    e.target.reach_id.value = "";
+    e.target.hero.value = "0";
+    e.target.power.value = "";
+    e.target.ability_id.value = "";
+    e.target.image.value = "";
+
+    document.getElementById("card-filter-form").submit.click();
+  });
+</script>

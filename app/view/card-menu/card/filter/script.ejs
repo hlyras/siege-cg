@@ -1,0 +1,148 @@
+<script>
+  document.getElementById("card-filter-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    let card = {
+      code: e.target.elements.namedItem('code').value,
+      name: e.target.elements.namedItem('name').value,
+      empire_id: e.target.elements.namedItem('empire_id').value,
+      reach_id: e.target.elements.namedItem('reach_id').value,
+      hero: e.target.elements.namedItem('hero').value,
+      ability_id: e.target.elements.namedItem('ability_id').value
+    };
+
+    let cards = await API.response(Card.filter, card);
+    if (!cards) { return false; }
+
+    Card.view.filter(cards);
+  });
+
+  document.getElementById("card-filter-form").submit.click();
+
+  async function editCard(card_id, param) {
+    let card = await API.response(Card.findById, card_id);
+    if (!card) { return false; }
+
+    console.log(card);
+
+    document.getElementById("card-create-form").id.value = card.id;
+    document.getElementById("card-create-form").code.value = card.code;
+    document.getElementById("card-create-form").power.value = card.power;
+    document.getElementById("card-create-form").name.value = card.name;
+    document.getElementById("card-create-form").empire_id.value = card.empire_id;
+    document.getElementById("card-create-form").reach_id.value = card.reach_id;
+    document.getElementById("card-create-form").hero.value = card.hero;
+    document.getElementById("card-create-form").power.value = card.power;
+    document.getElementById("card-create-form").ability_id.value = card.ability_id;
+    document.getElementById("card-create-form").image.value = card.image;
+  };
+
+  Card.view = {};
+
+  Card.view.power = (imageContainer, card) => {
+    if (card.power) {
+      let powerContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
+      let powerBorder = lib.element.create("div", {
+        class: "mobile-box container width-30 height-30 radius-30",
+        style: card.hero && "border: 2px outset #fc6a03;background-color:#000;color:#fc6a03;" || !card.hero && "border: 2px outset #444;background-image: linear-gradient(to bottom right, #f0f0f0, #f0f0f0, #fff);"
+      });
+
+      powerBorder.append(lib.element.create("div", {
+        class: 'lucida-grande bold em08 center'
+      }, card.power));
+
+      powerContainer.append(powerBorder);
+      imageContainer.append(powerContainer);
+    } else {
+      return false;
+    };
+  };
+
+  Card.view.reach = (imageContainer, card) => {
+    if (card.reach_id) {
+      let reachContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
+      let reachBorder = lib.element.create("div", {
+        style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #fc6a03, #fcae1e, #fcae1e);",
+        class: "mobile-box container width-30 height-30 padding-5 radius-30"
+      });
+
+      reachBorder.append(lib.element.create("img", {
+        src: card.reach_image,
+        class: "image-fit"
+      }));
+
+      reachContainer.append(reachBorder)
+      imageContainer.append(reachContainer);
+    } else {
+      return false;
+    };
+  };
+
+  Card.view.ability = (imageContainer, card) => {
+    if (card.ability_id) {
+      let abilityContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
+      let abilityBorder = lib.element.create("div", {
+        style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #f0f0f0, #f0f0f0, #fff);",
+        class: "mobile-box container ground width-30 height-30 padding-4 border-st-2 radius-30"
+      });
+
+      abilityBorder.append(lib.element.create("img", {
+        src: card.ability_image,
+        class: "image-fit"
+      }));
+
+      abilityContainer.append(abilityBorder)
+      imageContainer.append(abilityContainer);
+    } else {
+      return false;
+    };
+  };
+
+  Card.view.render = (deck, card) => {
+    let cardBox = lib.element.create("div", {
+      class: "mobile-box b3 max-width-125 margin-top-10 radius-15 opacity-out-08 cursor-2 noselect",
+      onclick: `editCard('${card.id}')`
+    });
+
+    // card container
+    let imageContainer = lib.element.create("div", {
+      style: `background-image: url(${card.image});`,
+      class: "bg min-height-125 radius-top-10 padding-2 cursor-2"
+    });
+
+    card.power && Card.view.power(imageContainer, card);
+    card.reach_id && Card.view.reach(imageContainer, card);
+    card.ability_id && Card.view.ability(imageContainer, card);
+
+    // info container
+    let infoContainer = lib.element.create("div", {
+      class: "mobile-box a1 ground center height-50 radius-bottom-10 cursor-2"
+    });
+
+    infoContainer.append(lib.element.create("div", {
+      class: "lucida-grande em07 padding-3 bold center cursor-2"
+    }, card.name));
+
+    // info container
+    let menuContainer = lib.element.create("div", {
+      class: "mobile-box a1 ground center height-50 radius-bottom-10 cursor-2"
+    });
+
+    menuContainer.append(lib.element.create("div", {
+      class: "lucida-grande em07 padding-3 bold center cursor-2"
+    }, 'Editar'));
+
+    cardBox.append(imageContainer);
+    cardBox.append(infoContainer);
+    deck.append(cardBox);
+  };
+
+  Card.view.filter = (cards) => {
+    let deck = document.getElementById("card-filter-box");
+    deck.innerHTML = "";
+
+    for (let i in cards) {
+      Card.view.render(deck, cards[i]);
+    };
+  };
+</script>
