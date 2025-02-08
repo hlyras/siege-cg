@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<%- include ("./../partials/head") %>
+
+	<style>
+		.circle {
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			background-color: rgba(255, 255, 255, 0.5);
+			border-radius: 50%;
+			pointer-events: none;
+			/* Permite clicar através do círculo */
+			animation: ripple 0.6s ease-out;
+		}
+
+		@keyframes ripple {
+			0% {
+				transform: scale(0);
+				opacity: 1;
+			}
+
+			100% {
+				transform: scale(10);
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+
+<body style="background-color: #222;">
+	<div class="container padding-10">
+		<div onclick="window.location.href='/'"
+			class="mobile-box lucida-grande bold padding-10 border radius-2 color-ground cursor-2">
+			Menu principal
+		</div>
+	</div>
+	<div id="content" class="container h-center"></div>
+</body>
+
+<%- include ("./../partials/lib") %>
+<%- include ("./card/component") %>
+<%- include ("./deck/collection") %>
+<%- include ("./deck/component") %>
+<%- include ("./empire/component") %>
+<script src="/js/card/main.js"></script>
+<script src="/js/deck/main.js"></script>
+<script src="/js/range/main.js"></script>
+<script src="/js/empire/main.js"></script>
+<script src="/js/user/main.js"></script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", async () => {
+		// Buscar qual é o Empire do User atualmente
+		// let user = (await API.response(User.filter, {}))[0];
+		// console.log(user.empire_id);
+
+		content.append(await EmpireComponent());
+	});
+</script>
+
+<script>
+	document.body.addEventListener('click', (event) => {
+		// Cria o elemento círculo
+		const circle = document.createElement('div');
+		circle.classList.add('circle');
+
+		// Define a posição do círculo no local do clique
+		const x = event.clientX;
+		const y = event.clientY;
+
+		circle.style.left = `${x - 10}px`; // Centraliza o círculo
+		circle.style.top = `${y - 10}px`;
+
+		// Adiciona o círculo ao body
+		document.body.appendChild(circle);
+
+		// Remove o círculo após a animação
+		circle.addEventListener('animationend', () => {
+			circle.remove();
+		});
+	});
+</script>
+
+</html>

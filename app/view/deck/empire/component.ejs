@@ -1,0 +1,99 @@
+<script>
+  // events
+  function EmpireCarouselComponent(empires, empire_id) {
+    let current_index = empires.findIndex(empire => empire.id === empire_id) || 0;
+
+    let carousel_div = lib.element.create("div", {
+      class: "box b1 container h-center"
+    });
+
+    let current_empire_div = lib.element.create("div", {
+      class: "mobile-box b2 container"
+    });
+
+    async function EmpireDisplayComponent(index, deck_box) {
+      current_empire_div.innerHTML = '';
+      let empire = empires[index];
+
+      let empire_image = lib.element.create("img", {
+        src: empire.image_white,
+        alt: empire.name,
+        class: "image-prop size-70 center"
+      });
+      current_empire_div.append(empire_image);
+
+      let empire_name = lib.element.create("div", {
+        class: "box b1 lucida-grande rem09 bold color-ground margin-top-5 center"
+      }, empire.name);
+      current_empire_div.append(empire_name);
+
+      deck_box.innerHTML = '';
+      deck_box.append(await EmpireDeckComponent(empire));
+    };
+
+    let previous_empire = lib.element.create("div", {
+      class: "mobile-box b8 lucida-grande rem09 bold border radius-3 color-ground center cursor-2",
+    }, '<');
+    carousel_div.append(previous_empire);
+
+    carousel_div.append(current_empire_div);
+
+    let next_empire = lib.element.create("div", {
+      class: "mobile-box b8 lucida-grande rem09 bold border radius-3 color-ground center cursor-2",
+    }, '>');
+    carousel_div.append(next_empire);
+
+    let deck_box = lib.element.create("div", {
+      class: "box b1 container margin-top-10"
+    });
+    carousel_div.append(deck_box);
+
+    EmpireDisplayComponent(current_index, deck_box);
+
+    previous_empire.addEventListener("click", () => {
+      current_index = (current_index - 1 + empires.length) % empires.length;
+      EmpireDisplayComponent(current_index, deck_box);
+    });
+
+    next_empire.addEventListener("click", () => {
+      current_index = (current_index + 1) % empires.length;
+      EmpireDisplayComponent(current_index, deck_box);
+    });
+
+    return carousel_div;
+  };
+
+  async function EmpireDeckComponent(empire) {
+    await API.response(User.update, { empire_id: empire.id });
+
+    let deck_box = lib.element.create("div", {
+      class: "box b1 container"
+    });
+
+    let collection_div = await CollectionComponent(empire.id);
+    deck_box.append(collection_div);
+
+    // Aqui vai o líder
+    // let new_div = await CollectionComponent(empire.id);
+    // deck_box.append(new_div);
+
+    let deck_div = await DeckComponent(empire.id);
+    deck_box.append(deck_div);
+
+    return deck_box;
+  };
+
+  async function EmpireComponent() {
+    let empire_box = lib.element.create("div", {
+      class: "box b1 container h-center padding-20"
+    });
+
+    let user = (await API.response(User.filter, {}))[0];
+    let empires = await API.response(Empire.filter, {});
+
+    let empire_carousel = EmpireCarouselComponent(empires, user.empire_id);
+    empire_box.append(empire_carousel);
+
+    return empire_box;
+  };
+</script>

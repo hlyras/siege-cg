@@ -1,0 +1,113 @@
+<script>
+  function DeckRangeComponent(ranges) {
+    let range_box = lib.element.create("div", {
+      class: "box b1 container padding-bottom-10"
+    });
+
+    let all_cards_icon = lib.element.create("div", {
+      class: "mobile-box b5 container"
+    });
+    range_box.append(all_cards_icon);
+
+    let all_cards_image = lib.element.create("img", {
+      src: '/image/icon/range/cards-white.png',
+      class: "image-prop size-30 center icon cursor-2"
+    });
+    all_cards_icon.append(all_cards_image);
+
+    let range_icons = {
+      allCards: all_cards_icon,
+      ranges: []
+    };
+
+    for (let i in ranges) {
+      if (ranges[i].id <= 4) {
+        let range_icon = lib.element.create("div", {
+          class: "mobile-box b5 container"
+        });
+        range_box.append(range_icon);
+
+        let range_image = lib.element.create("img", {
+          src: ranges[i].image_white,
+          class: "image-prop size-30 center icon cursor-2"
+        });
+        range_icon.append(range_image);
+
+        range_icons.ranges.push(range_icon);
+      }
+    }
+
+    return { range_box, range_icons };
+  };
+
+  function DeckCardComponent(cards, range_id) {
+    let card_box = lib.element.create("div", {
+      class: "box b1 container h-center padding-10"
+    });
+
+    if (range_id) {
+      let filtered_cards = cards.filter(card => card.range_id == range_id);
+
+      for (let i in filtered_cards) {
+        let card_div = CardComponent(filtered_cards[i], async () => {
+          let response = await API.response(Deck.delete, {
+            card_id: filtered_cards[i].id
+          });
+
+          card_div.remove();
+        });
+
+        card_box.append(card_div);
+      };
+    } else {
+      for (let i in cards) {
+        let card_div = CardComponent(cards[i], async () => {
+          let response = await API.response(Deck.delete, {
+            card_id: cards[i].id
+          });
+
+          card_div.remove();
+        });
+
+        card_box.append(card_div);
+      };
+    }
+
+    return card_box;
+  };
+
+  async function DeckComponent(empire_id) {
+    let deck_div = lib.element.create("div", {
+      class: "box b2-5 container h-center padding-10"
+    });
+
+    let ranges = await API.response(Range.filter, {});
+    let { range_box, range_icons } = DeckRangeComponent(ranges);
+    deck_div.append(range_box);
+
+    let card_box = lib.element.create("div", {
+      class: "box a1 container h-center height-350 scroll-y"
+    });
+    deck_div.append(card_box);
+
+    let deck = await API.response(Deck.filter, { empire_id });
+    card_box.append(DeckCardComponent(deck, null));
+
+    range_icons.allCards.addEventListener("click", async () => {
+      card_box.innerHTML = "";
+      let deck = await API.response(Deck.filter, { empire_id });;
+      card_box.append(DeckCardComponent(deck, null));
+    });
+
+    range_icons.ranges.forEach((icon, index) => {
+      let range_id = ranges[index].id;
+      icon.addEventListener("click", async () => {
+        card_box.innerHTML = "";
+        let deck = await API.response(Deck.filter, { empire_id });;
+        card_box.append(DeckCardComponent(deck, range_id));
+      });
+    });
+
+    return deck_div;
+  }
+</script>

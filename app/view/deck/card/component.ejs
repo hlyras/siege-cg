@@ -1,0 +1,108 @@
+<script>
+  function CardImageComponent(card) {
+    let card_image = lib.element.create("div", {
+      style: `background-image: url(${card.image});`,
+      class: "bg min-height-125 radius-top-5 padding-2 cursor-2"
+    });
+
+    return card_image;
+  };
+
+  function CardPowerComponent(card) {
+    let card_power = lib.element.create("div", {
+      class: "box a1 margin-top-5 cursor-2"
+    });
+
+    let power_border = lib.element.create("div", {
+      class: "mobile-box container width-30 height-30 radius-30",
+      style: card.hero && "border: 2px outset #fc6a03;background-color:#000;color:#fc6a03;" || !card.hero && "border: 2px outset #444;background-image: linear-gradient(to bottom right, #f0f0f0, #f0f0f0, #fff);"
+    });
+
+    power_border.append(lib.element.create("div", {
+      class: 'lucida-grande bold em08 center'
+    }, card.power));
+
+    card_power.append(power_border);
+
+    return card_power;
+  };
+
+  function CardRangeComponent(card) {
+    let range_div = lib.element.create("div", {
+      class: "box a1 margin-top-5 cursor-2"
+    });
+
+    let range_border = lib.element.create("div", {
+      style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #fc6a03, #fcae1e, #fcae1e);",
+      class: "mobile-box container width-30 height-30 padding-5 radius-30"
+    });
+
+    range_border.append(lib.element.create("img", {
+      src: card.range_image,
+      class: "image-fit"
+    }));
+
+    range_div.append(range_border)
+
+    return range_div;
+  };
+
+  function CardAbilityComponent(card) {
+    let ability_div = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
+    let ability_border = lib.element.create("div", {
+      style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #f0f0f0, #f0f0f0, #fff);",
+      class: "mobile-box container ground width-30 height-30 padding-4 border-st-2 radius-30"
+    });
+
+    ability_border.append(lib.element.create("img", {
+      src: card.ability_image,
+      class: "image-fit"
+    }));
+
+    ability_div.append(ability_border)
+
+    return ability_div;
+  };
+
+  function CardInfoComponent(card) {
+    let info_div = lib.element.create("div", {
+      style: `background-image: url(/image/card/style/bottom.png);`,
+      class: "bg ground center height-50 radius-bottom-5 cursor-2"
+    });
+
+    info_div.append(lib.element.create("div", {
+      class: "georgia rem09 bold padding-3 center opacity-08 cursor-2"
+    }, card.name));
+
+    return info_div;
+  }
+
+  function CardComponent(card, cb) {
+    let card_div = lib.element.create("div", {
+      class: "mobile-box b3 max-width-125 margin-top-5 radius-5 opacity-out-08 cursor-2 noselect"
+    });
+
+    let card_image = card.image ? CardImageComponent(card) : null;
+    card_image && card_div.append(card_image);
+
+    let card_power = card.power ? CardPowerComponent(card) : null;
+    card_power && card_image.append(card_power);
+
+    let card_range = card.range_id <= 4 ? CardRangeComponent(card) : null;
+    card_range && card_image.append(card_range);
+
+    let card_ability = card.ability_id ? CardAbilityComponent(card) : null;
+    card_ability && card_image.append(card_ability);
+
+    let card_info = card.name ? CardInfoComponent(card) : null;
+    card_info && card_div.append(card_info);
+
+    if (cb) {
+      card_div.addEventListener("click", async () => {
+        await cb(card);
+      });
+    }
+
+    return card_div;
+  };
+</script>

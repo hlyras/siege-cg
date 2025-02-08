@@ -1,17 +1,18 @@
 const db = require('../../../config/connection');
 const lib = require("jarmlib");
 
-const Empire = function () {
+const Range = function () {
   this.id;
   this.name;
   this.description
   this.image;
+  this.image_white;
 };
 
-Empire.filter = ({ props, inners, lefts, params, strict_params, in_params, order_params }) => {
+Range.filter = ({ props, inners, lefts, params, strict_params, in_params, order_params }) => {
   let { query, values } = new lib.Query().select()
     .props(props)
-    .table("siege.empire")
+    .table("siege.range")
     .inners(inners)
     .lefts(lefts)
     .params(params)
@@ -22,4 +23,4 @@ Empire.filter = ({ props, inners, lefts, params, strict_params, in_params, order
   return db(query, values);
 };
 
-module.exports = Empire;
+module.exports = Range;

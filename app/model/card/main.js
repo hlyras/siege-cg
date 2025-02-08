@@ -11,15 +11,15 @@ const Card = function () {
   this.ability_id;
   this.image;
 
-  this.save = () => {
+  this.create = () => {
     if (!this.code) { return { err: "É necessário incluir o código da carta" } };
     if (!this.name) { return { err: "É necessário incluir o nome da carta" } };
     if (!this.image) { return { err: "É necessário selecionar a imagem da carta" } };
 
     let obj = lib.convertTo.object(this);
-    let query = lib.Query.save(obj, 'siege.card');
+    let { query, values } = lib.Query.save(obj, 'siege.card');
 
-    return db(query);
+    return db(query, values);
   };
 
   this.update = () => {
@@ -28,11 +28,9 @@ const Card = function () {
     if (!this.name || this.name.length < 1 || this.name.length > 40) { return { err: "Nome inválido" }; }
 
     let obj = lib.convertTo.object(this);
-    let query = lib.Query.update(obj, 'siege.card', 'id');
+    let { query, values } = lib.Query.update(obj, 'siege.card', 'id');
 
-    console.log(query);
-
-    return db(query);
+    return db(query, values);
   };
 };
 
@@ -46,10 +44,18 @@ Card.findById = (card_id) => {
   return db(query);
 };
 
-Card.filter = (props, inners, params, strict_params, order_params, limit) => {
-  let query = new lib.Query().select().props(props).table("siege.card card")
-    .left(inners).params(params).strictParams(strict_params).order(order_params).limit(limit).build().query;
-  return db(query);
+Card.filter = ({ props, inners, lefts, params, strict_params, in_params, order_params }) => {
+  let { query, values } = new lib.Query().select()
+    .props(props)
+    .table("siege.card")
+    .inners(inners)
+    .lefts(lefts)
+    .params(params)
+    .strictParams(strict_params)
+    .inParams(in_params)
+    .order(order_params)
+    .build();
+  return db(query, values);
 };
 
 module.exports = Card;

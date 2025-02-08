@@ -13,7 +13,7 @@ leaderController.findByEmpireId = async (req, res) => {
   let orderParams = [["id", "ASC"]];
 
   try {
-    let leaders = await Leader.filter([], [], [], strictParams, orderParams, 0);
+    let leaders = await Leader.filter({ strictParams, orderParams });
     res.send(leaders);
   } catch (err) {
     console.log(err);

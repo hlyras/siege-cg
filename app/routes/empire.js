@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const lib = require('jarmlib');
 
-const empireController = require("../controller/empire/main");
+const Empire = require("../controller/empire/main");
 
-router.get("/list", lib.route.toHttps, empireController.list);
+router.post("/filter", lib.route.toHttps, Empire.filter);
 
 module.exports = router;

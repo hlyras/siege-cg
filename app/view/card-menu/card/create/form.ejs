@@ -18,10 +18,10 @@
     <% } %>
   </select>
 
-  <select name="reach_id" class="box b2 input-generic hide-disabled nofocus center margin-top-5 border cursor-2">
+  <select name="range_id" class="box b2 input-generic hide-disabled nofocus center margin-top-5 border cursor-2">
     <option value="" selected disabled>Distância de combate</option>
-    <% for(let i in reaches) { %>
-    <option value='<%= reaches[i].id %>'><%= reaches[i].name %></option>
+    <% for(let i in ranges) { %>
+    <option value='<%= ranges[i].id %>'><%= ranges[i].name %></option>
     <% } %>
   </select>
 

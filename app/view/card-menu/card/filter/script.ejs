@@ -6,7 +6,7 @@
       code: e.target.elements.namedItem('code').value,
       name: e.target.elements.namedItem('name').value,
       empire_id: e.target.elements.namedItem('empire_id').value,
-      reach_id: e.target.elements.namedItem('reach_id').value,
+      range_id: e.target.elements.namedItem('range_id').value,
       hero: e.target.elements.namedItem('hero').value,
       ability_id: e.target.elements.namedItem('ability_id').value
     };
@@ -30,7 +30,7 @@
     document.getElementById("card-create-form").power.value = card.power;
     document.getElementById("card-create-form").name.value = card.name;
     document.getElementById("card-create-form").empire_id.value = card.empire_id;
-    document.getElementById("card-create-form").reach_id.value = card.reach_id;
+    document.getElementById("card-create-form").range_id.value = card.range_id;
     document.getElementById("card-create-form").hero.value = card.hero;
     document.getElementById("card-create-form").power.value = card.power;
     document.getElementById("card-create-form").ability_id.value = card.ability_id;
@@ -58,21 +58,21 @@
     };
   };
 
-  Card.view.reach = (imageContainer, card) => {
-    if (card.reach_id) {
-      let reachContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
-      let reachBorder = lib.element.create("div", {
+  Card.view.range = (imageContainer, card) => {
+    if (card.range_id) {
+      let rangeContainer = lib.element.create("div", { class: "box a1 margin-top-5 cursor-2" });
+      let rangeBorder = lib.element.create("div", {
         style: "border: 2px outset #444;background-image: linear-gradient(to bottom right, #fc6a03, #fcae1e, #fcae1e);",
         class: "mobile-box container width-30 height-30 padding-5 radius-30"
       });
 
-      reachBorder.append(lib.element.create("img", {
-        src: card.reach_image,
+      rangeBorder.append(lib.element.create("img", {
+        src: card.range_image,
         class: "image-fit"
       }));
 
-      reachContainer.append(reachBorder)
-      imageContainer.append(reachContainer);
+      rangeContainer.append(rangeBorder)
+      imageContainer.append(rangeContainer);
     } else {
       return false;
     };
@@ -111,7 +111,7 @@
     });
 
     card.power && Card.view.power(imageContainer, card);
-    card.reach_id && Card.view.reach(imageContainer, card);
+    card.range_id <= 4 && Card.view.range(imageContainer, card);
     card.ability_id && Card.view.ability(imageContainer, card);
 
     // info container
@@ -134,7 +134,8 @@
 
     cardBox.append(imageContainer);
     cardBox.append(infoContainer);
-    deck.append(cardBox);
+
+    return cardBox;
   };
 
   Card.view.filter = (cards) => {
@@ -142,7 +143,7 @@
     deck.innerHTML = "";
 
     for (let i in cards) {
-      Card.view.render(deck, cards[i]);
+      deck.append(Card.view.render(deck, cards[i]));
     };
   };
 </script>

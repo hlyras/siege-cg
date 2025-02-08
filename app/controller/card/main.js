@@ -1,5 +1,5 @@
 const Card = require('../../model/card/main');
-const Reach = require('../../model/reach/main');
+const Range = require('../../model/range/main');
 const Empire = require('../../model/empire/main');
 const Ability = require('../../model/ability/main');
 
@@ -8,20 +8,20 @@ const lib = require("jarmlib");
 const cardController = {};
 
 cardController.menu = async (req, res) => {
-  let empires = await Empire.list();
-  let reaches = await Reach.list();
+  let empires = await Empire.filter({});
+  let ranges = await Range.filter({});
   let abilities = await Ability.list();
 
-  res.render('card-menu/index', { empires, reaches, abilities });
+  res.render('card-menu/index', { empires, ranges, abilities });
 };
 
-cardController.save = async (req, res) => {
+cardController.create = async (req, res) => {
   let card = new Card();
   if (req.body.id) { card.id = req.body.id };
   if (req.body.code) { card.code = req.body.code };
   if (req.body.name) { card.name = req.body.name };
   if (req.body.empire_id) { card.empire_id = req.body.empire_id };
-  if (req.body.reach_id) { card.reach_id = req.body.reach_id };
+  if (req.body.range_id) { card.range_id = req.body.range_id };
   if (req.body.hero) { card.hero = req.body.hero };
   if (req.body.power) { card.power = req.body.power };
   if (req.body.ability_id) { card.ability_id = req.body.ability_id };
@@ -29,7 +29,7 @@ cardController.save = async (req, res) => {
 
   try {
     if (!card.id) {
-      let response = await card.save();
+      let response = await card.create();
       if (response.err) { return res.send({ msg: response.err }); }
       res.send({ done: "Carta criada com sucesso!" });
     } else {
@@ -47,24 +47,24 @@ cardController.save = async (req, res) => {
 cardController.list = async (req, res) => {
   let props = [
     'card.*',
-    'reach.name reach_name',
-    'reach.description reach_description',
-    'reach.image reach_image',
-    'reach.image_white reach_image_white',
+    'range.name range_name',
+    'range.description range_description',
+    'range.image range_image',
+    'range.image_white range_image_white',
     'ability.name ability_name',
     'ability.image ability_image',
     'ability.image_white ability_image_white'
   ];
 
   let inners = [
-    ['siege.reach reach', 'reach.id', 'card.reach_id'],
+    ['siege.range range', 'range.id', 'card.range_id'],
     ['siege.ability ability', 'card.ability_id', 'ability.id']
   ];
 
   let orderParams = [["code", "ASC"]];
 
   try {
-    let cards = await Card.filter(props, inners, [], [], orderParams, 0);
+    let cards = await Card.filter({ props, inners, orderParams });
     res.send(cards);
   } catch (err) {
     console.log(err);
@@ -85,34 +85,37 @@ cardController.findById = async (req, res) => {
 cardController.filter = async (req, res) => {
   let props = [
     'card.*',
-    'reach.name reach_name',
-    'reach.description reach_description',
-    'reach.image reach_image',
-    'reach.image_white reach_image_white',
+    'range.name range_name',
+    'range.description range_description',
+    'range.image range_image',
+    'range.image_white range_image_white',
     'ability.name ability_name',
     'ability.image ability_image',
     'ability.image_white ability_image_white'
   ];
 
   let inners = [
-    ['siege.reach reach', 'siege.reach.id', 'card.reach_id'],
-    ['siege.ability ability', 'card.ability_id', 'siege.ability.id']
+    ['siege.range', 'range.id', 'card.range_id'],
+  ];
+
+  let lefts = [
+    ['siege.ability', 'card.ability_id', 'ability.id']
   ];
 
   let params = { keys: [], values: [] };
-  let strictParams = { keys: [], values: [] };
+  let strict_params = { keys: [], values: [] };
 
-  lib.Query.fillParam("card.code", req.body.code, strictParams);
+  lib.Query.fillParam("card.code", req.body.code, strict_params);
   lib.Query.fillParam("card.name", req.body.name, params);
-  lib.Query.fillParam("card.empire_id", req.body.empire_id, strictParams);
-  lib.Query.fillParam("card.reach_id", req.body.reach_id, strictParams);
-  lib.Query.fillParam("card.hero", req.body.hero, strictParams);
-  lib.Query.fillParam("card.ability_id", req.body.ability_id, strictParams);
+  lib.Query.fillParam("card.empire_id", req.body.empire_id, strict_params);
+  lib.Query.fillParam("card.range_id", req.body.range_id, strict_params);
+  lib.Query.fillParam("card.hero", req.body.hero, strict_params);
+  lib.Query.fillParam("card.ability_id", req.body.ability_id, strict_params);
 
-  let orderParams = [["code", "ASC"]];
+  let order_params = [["code", "ASC"]];
 
   try {
-    let cards = await Card.filter(props, inners, params, strictParams, orderParams, 0);
+    let cards = await Card.filter({ props, inners, lefts, params, strict_params, order_params });
     res.send(cards);
   } catch (err) {
     console.log(err);
@@ -121,30 +124,33 @@ cardController.filter = async (req, res) => {
 };
 
 cardController.findByEmpireId = async (req, res) => {
-  let strictParams = { keys: [], values: [] };
+  let strict_params = { keys: [], values: [] };
 
   let props = [
     'card.*',
-    'reach.name reach_name',
-    'reach.description reach_description',
-    'reach.image reach_image',
-    'reach.image_white reach_image_white',
+    'range.name range_name',
+    'range.description range_description',
+    'range.image range_image',
+    'range.image_white range_image_white',
     'ability.name ability_name',
     'ability.image ability_image',
     'ability.image_white ability_image_white'
   ];
 
   let inners = [
-    ['siege.reach reach', 'siege.reach.id', 'card.reach_id'],
-    ['siege.ability ability', 'card.ability_id', 'siege.ability.id']
+    ['siege.range', 'range.id', 'card.range_id']
   ];
 
-  lib.Query.fillParam("card.empire_id", req.params.empire_id, strictParams);
+  let lefts = [
+    ['siege.ability', 'card.ability_id', 'ability.id']
+  ];
 
-  let orderParams = [["code", "ASC"]];
+  lib.Query.fillParam("card.empire_id", req.params.empire_id, strict_params);
+
+  let order_params = [["code", "ASC"]];
 
   try {
-    let cards = await Card.filter(props, inners, [], strictParams, orderParams, 0);
+    let cards = await Card.filter({ props, inners, lefts, strict_params, order_params });
     res.send(cards);
   } catch (err) {
     console.log(err);

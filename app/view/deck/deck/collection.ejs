@@ -1,0 +1,91 @@
+<script>
+  function CollectionCardComponent(cards, range_id) {
+    let card_box = lib.element.create("div", {
+      class: "box b1 container h-center padding-10"
+    });
+
+    if (range_id) {
+      let filtered_cards = cards.filter(card => card.range_id == range_id);
+
+      for (let i in filtered_cards) {
+        let card_div = CardComponent(filtered_cards[i], async () => {
+          let response = await API.response(Deck.create, {
+            card_id: filtered_cards[i].id
+          });
+
+          card_div.remove();
+        });
+
+        card_box.append(card_div);
+      };
+    } else {
+      for (let i in cards) {
+        let card_div = CardComponent(cards[i], async () => {
+          let response = await API.response(Deck.create, {
+            card_id: cards[i].id
+          });
+
+          card_div.remove();
+        });
+
+        card_box.append(card_div);
+      };
+    }
+
+    return card_box;
+  };
+
+  async function CollectionCards(empire_id) {
+    let deck = await API.response(Deck.filter, { empire_id });
+    let collection_cards = await API.response(Card.filter, { empire_id });
+
+    collection_cards = collection_cards.reduce((collection_cards, card) => {
+      for (let i in deck) {
+        if (card.id == deck[i].card_id) {
+          return collection_cards;
+        }
+      };
+
+      collection_cards.push(card);
+
+      return collection_cards;
+    }, []);
+
+    return collection_cards;
+  };
+
+  async function CollectionComponent(empire_id) {
+    let collection_div = lib.element.create("div", {
+      class: "box b2-5 container h-center padding-10"
+    });
+
+    let ranges = await API.response(Range.filter, {});
+    let { range_box, range_icons } = DeckRangeComponent(ranges);
+    collection_div.append(range_box);
+
+    let card_box = lib.element.create("div", {
+      class: "box a1 container h-center height-350 scroll-y"
+    });
+    collection_div.append(card_box);
+
+    let collection_cards = await CollectionCards(empire_id);
+    card_box.append(CollectionCardComponent(collection_cards, null));
+
+    range_icons.allCards.addEventListener("click", async () => {
+      card_box.innerHTML = "";
+      let collection_cards = await CollectionCards(empire_id);
+      card_box.append(CollectionCardComponent(collection_cards, null));
+    });
+
+    range_icons.ranges.forEach((icon, index) => {
+      let range_id = ranges[index].id;
+      icon.addEventListener("click", async () => {
+        card_box.innerHTML = "";
+        let collection_cards = await CollectionCards(empire_id);
+        card_box.append(CollectionCardComponent(collection_cards, range_id));
+      });
+    });
+
+    return collection_div;
+  }
+</script>
